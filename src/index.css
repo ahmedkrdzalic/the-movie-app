@@ -1,4 +1,6 @@
 body {
+  background-color: #171717;
+  color: white;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +12,58 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.card {
+  background-color: transparent;
+  border-radius: 20px;
+}
+
+a {
+  color: whitesmoke;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+a:hover {
+  color: #7c7c7c;
+}
+
+a img {
+  transition: all 0.3s ease-in-out;
+  border-radius: 20px;
+  border: solid 3px #af9135;
+  
+}
+
+a img:hover {
+  filter: brightness(70%);
+}
+
+.page-link:hover {
+  cursor: pointer;
+}
+
+.detail-info {
+  color: #7c7c7c;
+}
+
+.detail-info p {
+  font-weight: lighter;
+}
+
+.LOGO {
+  border: none;
+}
+
+.paginationBTN  a{
+  background-color: transparent;
+  border: solid 2px #af9135;
+  color: #af9135;
+}
+
+.paginationBTN  a:hover{
+  background-color: transparent;
+  border-color: #ffe289;
+  color: #ffe289;
 }
