@@ -29,13 +29,7 @@ export const fetchMostPopularMovies = async (page) => {
             rating: movie['vote_average'],
         }))
 
-        const pageDetails = {
-            currentPage: data['page'],
-            totalPages: data['total_pages'],
-            totalMovies: data['total_results']
-        };
-
-        return [movies, pageDetails];
+        return movies;
     } 
     catch(error) {
         console.log(error);

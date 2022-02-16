@@ -5,46 +5,49 @@ import {Link} from 'react-router-dom'
 
 export function Home() {
     //
-    const [pageDetails, setPageDetails] = useState({
-        currentPage: 1,
-        totalPages: 32282,
-        totalMovies: 645640
-    });
+
     const [mostPopularMovies, setMostPopularMovies] = useState([]);
 
     const [paginationBTNS, setPaginationBTNS] = useState([]);
 
-    const [pageNmbr, setPageNmbr] = useState(1);
+    
+    useEffect(() => {
+        const fetchAPI = async () => {
+            const movies = await fetchMostPopularMovies(1);
+            setMostPopularMovies(movies);
+            
+            pagination_array(1);
+        };
+        fetchAPI();
+
+    }, []);
+
+    const mostPopularMovies_load = async (page) => {
+        const movies = await fetchMostPopularMovies(page);
+        setMostPopularMovies(movies);
+        pagination_array(page);
+    }
+    
 
     //pagination logic
-    const paginationBTNS_display = paginationBTNS.map((item, i) => {
-        return(
-            <li className="page-item paginationBTN" key={i} >
-                <a className="page-link" href='#' onClick={(e) => {
-                    e.preventDefault();
-                    if (item !== "...") setPageNmbr(item);
-                }}>
-                    {item}
-                </a>
-            </li>
-        )
-    });
+    
 
-
+    //this function creates an array of characters (page numbers) that will be displayed in the bottom as a buttons.
+    //it takes a current page number as an argument.
     const pagination_array = (page) => {
         
         var paginationBTNS_ = [];
         if(page>4) {
             paginationBTNS_.push(1, "...", page-2, page-1, page);
 
-            if(page<pageDetails.totalPages-4){
-                paginationBTNS_.push(page+1, page+2, "...", pageDetails.totalPages);
+            if(page<500-4){
+                paginationBTNS_.push(page+1, page+2, "...", 500);
             }
             else {
-                if (page+1<pageDetails.totalPages) paginationBTNS_.push(page+1);
-                if (page+2<pageDetails.totalPages) paginationBTNS_.push(page+2);
-                if (page+3<pageDetails.totalPages) paginationBTNS_.push(page+3);
-                if (page+4<pageDetails.totalPages) paginationBTNS_.push(page+4);
+                if (page+1<500) paginationBTNS_.push(page+1);
+                if (page+2<500) paginationBTNS_.push(page+2);
+                if (page+3<500) paginationBTNS_.push(page+3);
+                if (page+4<500) paginationBTNS_.push(page+4);
             }
         }
         else {
@@ -53,19 +56,34 @@ export function Home() {
             if (page-1>0) paginationBTNS_.push(page-1);
             paginationBTNS_.push(page);
 
-            if(page<pageDetails.totalPages-4){
-                paginationBTNS_.push(page+1, page+2, "...", pageDetails.totalPages);
+            if(page<500-4){
+                paginationBTNS_.push(page+1, page+2, "...", 500);
             }
             else {
-                if (page+1<pageDetails.totalPages) paginationBTNS_.push(page+1);
-                if (page+2<pageDetails.totalPages) paginationBTNS_.push(page+2);
-                if (page+3<pageDetails.totalPages) paginationBTNS_.push(page+3);
-                if (page+4<pageDetails.totalPages) paginationBTNS_.push(page+4);
+                if (page+1<500) paginationBTNS_.push(page+1);
+                if (page+2<500) paginationBTNS_.push(page+2);
+                if (page+3<500) paginationBTNS_.push(page+3);
+                if (page+4<500) paginationBTNS_.push(page+4);
             }
         }
         setPaginationBTNS(paginationBTNS_);
         console.log(paginationBTNS);
     };
+
+    const paginationBTNS_display = paginationBTNS.map((item, i) => {
+        return(
+            <li className="page-item paginationBTN" key={i} >
+                <a className="page-link" onClick={(e) => {
+                    e.preventDefault();
+                    if (item !== "...") {
+                        mostPopularMovies_load(item)
+                    }
+                }}>
+                    {item}
+                </a>
+            </li>
+        )
+    });
 
 
     const mostPopularMovies_display = mostPopularMovies.map((movie, i) => {
@@ -91,16 +109,7 @@ export function Home() {
     });
 
     
-    useEffect(() => {
-        const fetchAPI = async () => {
-            const [movies, pageDetails_] = await fetchMostPopularMovies(pageNmbr);
-            setPageDetails(pageDetails_);
-            setMostPopularMovies(movies);
-        };
-        fetchAPI();
-        
-        pagination_array(pageDetails.currentPage);
-    }, [pageNmbr]);
+    
     
 
     return (
