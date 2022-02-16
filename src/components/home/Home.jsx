@@ -76,7 +76,7 @@ export function Home() {
                         <Link to={`/movie/${movie.id}`}>
                             <img className='img-fluid' src={movie.poster} alt={movie.title}></img>
                         </Link>
-                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning" style={{color:"black", fontSize: 16}}>
+                        <span className="position-absolute top-0 end-0 badge bg-warning" style={{color:"black", fontSize: 16, borderEndStartRadius: 15, borderTopRightRadius: 20}}>
                             {movie.rating}
                         </span>
                     </div>
