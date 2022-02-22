@@ -45,7 +45,6 @@ export const fetchMovieDetails = async (id) => {
                 language: 'en_US'
             }
         });
-        console.log(data);
         return data;
     }
     catch(error){
@@ -53,4 +52,55 @@ export const fetchMovieDetails = async (id) => {
     }
 }
 
+export const fetchMovieVideo = async (id) => {
+    try{
+        const {data} = await axios.get(`${url}/movie/${id}/videos`, {
+            params: {
+                api_key: apiKey,
+            }
+        });
+        
+
+        let video = {};
+        //take just one that have type: "Trailer"
+        for (let i = 0; i < data['results'].length; i++) {
+            if (data['results'][i].type === "Trailer") {
+                video = data['results'][i];
+                break;
+            } 
+        }
+        return video;
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+export const fetchMovieCast = async (id) => {
+    try{
+        const {data} = await axios.get(`${url}/movie/${id}/credits`, {
+            params: {
+                api_key: apiKey,
+            }
+        });
+        
+
+        let cast = [];
+        //take just the top cast acting members 
+        
+        for (let i = 0; i < data['cast'].length; i++) {
+            if (data['cast'][i].known_for_department === "Acting" && data['cast'][i].order < 6) {
+                cast.push(data['cast'][i]);
+            } 
+        }
+        
+
+        console.log("cast");
+        console.log(cast);
+        return cast;
+    }
+    catch(error){
+        console.log(error);
+    }
+}
 

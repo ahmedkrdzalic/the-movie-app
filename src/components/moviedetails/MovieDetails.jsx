@@ -1,19 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieDetails } from '../../service';
+import { fetchMovieDetails, fetchMovieVideo, fetchMovieCast } from '../../service';
+import ReactPlayer from 'react-player';
 
 
 export function MovieDetails() {
     //let params = match.params;
     const {id} = useParams();
     const [detail, setDetail] = useState({});
+    const [video, setVideo] = useState({});
+    const [cast, setCast] = useState([]);
 
     useEffect(() => {
         const fetchAPI = async () => {
             setDetail(await fetchMovieDetails(id));
+            setVideo(await fetchMovieVideo(id));
+            setCast(await fetchMovieCast(id));
         }
         fetchAPI();
     }, [id])
+
+    const video_display = () => {
+        let YTurl = 'https://youtube.com/watch?v=';
+        return (
+            <div className='mt-2 player-wrapper'>
+                <ReactPlayer controls url={YTurl + video.key} width="100%" height="100%" className="react-player" />
+            </div>
+        )
+    }
+
+    
+    const cast_display = () => {
+
+        return (
+            <div className='row mt-4'>
+                {cast &&
+                    cast.map((castMember, i) => {
+                        return (
+                            <div className="col-4 col-sm-4 col-md-3 col-lg-2 text-center" key={i}>
+                                <img src={"https://image.tmdb.org/t/p/w200" + castMember.profile_path} alt={castMember.name} className='rounded-pill border-2 border border-warning' width={100}/>
+                                <p><span className='text-light'>{castMember.name}</span> <br />
+                                {castMember.character}</p>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+
 
     return (
         <div className='container'>
@@ -46,25 +81,35 @@ export function MovieDetails() {
             </div>
             <div className='row mt-2'>
                 <hr className="bg-warning border-2 border-top border-warning" />
-                <div className='col-3 detail-info'>
+                <div className='col-12 col-sm-3 detail-info'>
                     <h5>RELEASE DATE</h5>
                     <p>{detail.release_date}</p>
                 </div>
-                <div className='col-3 detail-info'>
+                <div className='col-12 col-sm-3 detail-info'>
                     <h5>RUN TIME</h5>
                     <p>{detail.runtime} min</p>
                 </div>
-                <div className='col-3 detail-info'>
+                <div className='col-12 col-sm-3 detail-info'>
                     <h5>ORIGINAL LANGUAGE</h5>
                     <p>{detail.original_language}</p>
                 </div>
-                <div className='col-3 detail-info'>
+                <div className='col-12 col-sm-3 detail-info'>
                     <h5>HOMEPAGE</h5>
-                    <p><a href={detail.homepage}>{detail.homepage}</a></p>
+                    <p><a href={detail.homepage}>Click here</a></p>
                 </div>
+                <hr className="bg-warning border-2 border-top border-warning" />
             </div>
-            <div className='row m-3'>
-                
+            <div className='row mt-2 mb-4'>
+                <div className='col-lg-12 col-xxl-6'>
+                    <h3 style={{color:"#af9135"}}>Trailer:</h3>
+                    {video_display()}
+                </div>
+                <div className='col-lg-12 col-xxl-6 detail-info mt-4'>
+                    <div className='row mx-2'>
+                        <h5>CAST:</h5>
+                    </div>
+                    {cast_display()}
+                </div>
             </div>
         </div>
     )

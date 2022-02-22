@@ -4,14 +4,13 @@ import {Link} from 'react-router-dom'
 
 
 export function Home() {
-    //
-
     const [mostPopularMovies, setMostPopularMovies] = useState([]);
 
     const [paginationBTNS, setPaginationBTNS] = useState([]);
 
     
     useEffect(() => {
+        //.then((result) => setMovies(result)) u fetch funkciji 
         const fetchAPI = async () => {
             const movies = await fetchMostPopularMovies(1);
             setMostPopularMovies(movies);
@@ -30,8 +29,6 @@ export function Home() {
     
 
     //pagination logic
-    
-
     //this function creates an array of characters (page numbers) that will be displayed in the bottom as a buttons.
     //it takes a current page number as an argument.
     const pagination_array = (page) => {
@@ -88,7 +85,7 @@ export function Home() {
 
     const mostPopularMovies_display = mostPopularMovies.map((movie, i) => {
         return (
-            <div className="col-md-3 col-sm-6" key={i}>
+            <div className="col-md-3 4col-6" key={i}>
                 <div className="card mt-4" >
                     <div className="">
                         <Link to={`/movie/${movie.id}`}>
