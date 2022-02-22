@@ -1,6 +1,7 @@
-import {React, useEffect, useState} from 'react';
+import {React, useContext, useEffect, useState} from 'react';
 import {fetchMostPopularMovies} from '../../service'
 import {Link} from 'react-router-dom'
+import { PageContext } from '../../service/Context';
 
 
 export function Home() {
@@ -8,14 +9,16 @@ export function Home() {
 
     const [paginationBTNS, setPaginationBTNS] = useState([]);
 
+    const {pageNumber, setPageNumber} = useContext(PageContext);
+
     
     useEffect(() => {
         //.then((result) => setMovies(result)) u fetch funkciji 
         const fetchAPI = async () => {
-            const movies = await fetchMostPopularMovies(1);
+            const movies = await fetchMostPopularMovies(pageNumber);
             setMostPopularMovies(movies);
             
-            pagination_array(1);
+            pagination_array(pageNumber);
         };
         fetchAPI();
 
@@ -25,6 +28,7 @@ export function Home() {
         const movies = await fetchMostPopularMovies(page);
         setMostPopularMovies(movies);
         pagination_array(page);
+        setPageNumber(page);
     }
     
 

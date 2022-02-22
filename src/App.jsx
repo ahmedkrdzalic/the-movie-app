@@ -3,11 +3,17 @@ import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import {Home} from './components/home/Home';
 import {MovieDetails} from './components/moviedetails/MovieDetails';
 import LOGO from './theMovieApp.png'
+import { PageContext } from './service/Context';
+import { useState } from 'react';
 
 
 function App() {
+  const [pageNumber, setPageNumber] = useState(1);
+
+
   return (
     <BrowserRouter>
+    <PageContext.Provider value={{pageNumber, setPageNumber}}>
       
         <div className='container'>
           <div className='row pt-4'>
@@ -24,6 +30,7 @@ function App() {
         <Route path="/" element={<Home />} exact />
         <Route path="/movie/:id" element={<MovieDetails />} />
       </Routes>
+    </PageContext.Provider>
     </BrowserRouter>
   );
 }
